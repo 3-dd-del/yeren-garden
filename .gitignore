@@ -1,0 +1,11 @@
+node_modules/
+dist/
+artifacts/
+*.blend1
+*.blend2
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
