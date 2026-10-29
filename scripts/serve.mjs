@@ -16,15 +16,15 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(200, { 'Content-Type': mime[extname(path)] || 'application/octet-stream', 'Cache-Control': 'no-cache', 'X-Content-Type-Options': 'nosniff', 'Content-Length': data.length });
     res.end(data);
   } catch { res.writeHead(404).end('Not found'); }
-}).listen(port, '127.0.0.1', () => console.log(`野人花园：http://127.0.0.1:${port}`));
+}).listen(port, '127.0.0.1', () => console.log(`雨夜便利店：http://127.0.0.1:${port}`));
 
 server.on('error', async error => {
   if (error.code === 'EADDRINUSE') {
     try {
       const response = await fetch(`http://127.0.0.1:${port}`, { signal: AbortSignal.timeout(1500) });
       const html = await response.text();
-      if (response.ok && html.includes('野人花园 · 光阴漫游')) {
-        console.log(`校园预览已在运行：http://127.0.0.1:${port}`);
+      if (response.ok && html.includes('雨夜便利店 · 微缩街角')) {
+        console.log(`雨夜便利店预览已在运行：http://127.0.0.1:${port}`);
         process.exit(0);
       }
     } catch {}

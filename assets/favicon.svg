@@ -1,18 +1,21 @@
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="24"
-  height="24"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="#edc4a7"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
-  class="icon icon-tabler icons-tabler-outline icon-tabler-building-pavilion"
->
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M3 21h7v-3a2 2 0 0 1 4 0v3h7" />
-  <path d="M6 21l0 -9" />
-  <path d="M18 21l0 -9" />
-  <path d="M6 12h12a3 3 0 0 0 3 -3a9 8 0 0 1 -9 -6a9 8 0 0 1 -9 6a3 3 0 0 0 3 3" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#14243a"/>
+      <stop offset="1" stop-color="#050912"/>
+    </linearGradient>
+    <linearGradient id="sign" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#62ebff"/>
+      <stop offset="0.52" stop-color="#d7fbff"/>
+      <stop offset="1" stop-color="#ff84c9"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#sky)"/>
+  <path d="M11 25 15 13h34l4 12Z" fill="#10263b" stroke="#6fe8ff" stroke-width="1.5" stroke-linejoin="round"/>
+  <rect x="11" y="24" width="42" height="29" rx="3" fill="#0a1726" stroke="#abcfe4" stroke-width="1.5"/>
+  <rect x="15" y="17" width="34" height="7" rx="2" fill="url(#sign)"/>
+  <rect x="17" y="32" width="12" height="21" rx="1.5" fill="#ffc37d" opacity=".9"/>
+  <rect x="33" y="32" width="16" height="10" rx="1.5" fill="#56d9ef" opacity=".55" stroke="#9af4ff" stroke-width="1"/>
+  <path d="M49 32v10M19 53V32M29 32v10" stroke="#f7d9ad" stroke-width="1.2" opacity=".8"/>
+  <path d="M21 39h4M35 36h5M41 36h4M5 18l-2 4M8 34l-2 4M59 13l-2 4M56 38l-2 4" stroke="#8eddf3" stroke-width="1.5" stroke-linecap="round" opacity=".85"/>
 </svg>

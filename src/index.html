@@ -2,113 +2,15 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#24222c" />
-    <meta name="description" content="走进野人花园，滑动时间轴，看看从第一缕晨光到夜幕降临的三维校园。" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="theme-color" content="#070b13" />
+    <meta name="description" content="一座可以在雨夜里自由旋转、缩放观看的日式便利店街角微缩三维景观。" />
     <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./app.css" />
-    <title>野人花园 · 光阴漫游</title>
+    <title>雨夜便利店 · 微缩街角</title>
   </head>
   <body>
-    <a class="skip-link" href="#time-slider">跳到校园时间轴</a>
-    <div class="campus-page" id="campus-page" data-period="sunset" data-timeline-hidden="false">
-      <div class="scene-stage" id="scene-stage" role="group" aria-label="可交互的野人花园三维庭院"></div>
-      <div class="scene-scrim" aria-hidden="true"></div>
-      <header class="site-header">
-        <a class="brand" href="./" aria-label="野人花园首页">
-          <span class="brand-mark" data-icon="building-pavilion" aria-hidden="true"></span>
-          <span class="brand-text"><strong>野人花园</strong><span>YEREN GARDEN</span></span>
-        </a>
-        <nav class="header-nav" aria-label="首页导航">
-          <div class="nav-tabs" role="tablist" aria-label="切换校园展示">
-            <button class="nav-item is-current" id="nav-campus" role="tab" aria-selected="true" aria-controls="panorama-copy" data-view="campus" type="button">校园全景</button>
-            <button class="nav-item" id="nav-time" role="tab" aria-selected="false" aria-controls="time-copy" data-view="time" tabindex="-1" type="button">一天的光景</button>
-            <span class="nav-indicator" aria-hidden="true"></span>
-          </div>
-        </nav>
-        <button class="fullscreen-button" id="fullscreen-button" type="button" aria-label="全屏观看校园" title="全屏观看">
-          <span data-icon="maximize" aria-hidden="true"></span><span id="fullscreen-label">全屏观看</span>
-        </button>
-      </header>
-
-      <main id="campus">
-        <section class="hero-copy" aria-label="校园介绍">
-          <div class="hero-pages">
-            <article class="hero-slide" id="panorama-copy" role="tabpanel" aria-labelledby="nav-campus">
-              <p class="hero-eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span>在校园，遇见每一束光</p>
-              <h1 id="hero-title">校园的光，<br />不止一种模样<span class="title-period">。</span></h1>
-              <p class="hero-description">从第一缕晨光，到万家灯火。<br />把时间慢下来，看看校园此刻的模样。</p>
-              <a class="hero-link" href="#campus-time">拨动校园时光<span data-icon="arrow-down-right" aria-hidden="true"></span></a>
-            </article>
-            <article class="hero-slide" id="time-copy" role="tabpanel" aria-labelledby="nav-time" aria-hidden="true" inert>
-              <p class="hero-eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span>沿着光的轨迹，慢慢看</p>
-              <h2 class="hero-display">同一座校园，<br />不一样的时光。</h2>
-              <p class="hero-description">轻轻滑动下方的时间轴，<br />看晨光、晚霞与窗内的灯火依次交接。</p>
-              <button class="hero-link" id="focus-timeline" type="button">从这一刻开始<span data-icon="arrow-down-right" aria-hidden="true"></span></button>
-            </article>
-          </div>
-        </section>
-        <div class="inspection-caption" hidden><p>校园建筑 · 示意结构</p><h2>看见建筑的里面</h2><span>两层空间、梁柱屋架与交通楼梯<br />内部布局按校园阅览空间设计</span><div class="floor-controls" role="group" aria-label="选择内部楼层"><button type="button" data-floor="upper" aria-pressed="true">查看二层</button><button type="button" data-floor="ground" aria-pressed="false">查看一层</button></div></div>
-        <aside class="structure-panel" aria-label="建筑结构控制">
-          <div class="structure-title"><strong>中央庭院</strong><span>建筑探索</span></div>
-          <div class="structure-actions">
-            <button type="button" id="inspect-interior" data-scene-action disabled><span data-icon="building-community" aria-hidden="true"></span>查看内部</button>
-            <button type="button" id="reset-view" data-scene-action disabled><span data-icon="rotate-3d" aria-hidden="true"></span>恢复视角</button>
-          </div>
-          <div class="roof-controls" role="group" aria-label="屋顶显示方式">
-            <span>屋顶</span>
-            <button type="button" data-roof-mode="assembled" aria-label="恢复完整屋顶" aria-pressed="true" data-scene-action disabled>完整</button>
-            <button type="button" data-roof-mode="lifted" aria-label="抬升全部屋顶" aria-pressed="false" data-scene-action disabled>抬升</button>
-            <button type="button" data-roof-mode="hidden" aria-label="一键隐藏全部屋顶" aria-pressed="false" data-scene-action disabled>隐藏</button>
-          </div>
-          <p id="roof-state-note" role="status">点击任一屋顶，即可隐藏并查看内部</p>
-        </aside>
-        <p class="orbit-help"><span data-icon="rotate-360" aria-hidden="true"></span>拖动环绕 · 滚轮缩放 · 右键平移 · 点击屋顶隐藏</p>
-
-
-        <div class="scene-loading" id="scene-loading" role="status"><span class="loading-line" aria-hidden="true"></span><span id="loading-label">正在走进校园…</span></div>
-        <div class="scene-error" id="scene-error" role="alert" hidden>
-          <strong>校园场景暂时没有加载完成</strong>
-          <p id="error-description">请稍后重试。</p>
-          <button id="retry-button" type="button">重新加载<span data-icon="refresh" aria-hidden="true"></span></button>
-        </div>
-
-        <section class="time-panel" id="campus-time" aria-labelledby="timeline-title">
-          <div class="time-heading">
-            <div class="time-heading-copy"><span data-icon="clock-hour-5" aria-hidden="true"></span><h2 id="timeline-title">把校园，放进一天里</h2><p>滑动时间，光影随你而变</p></div>
-            <div class="time-heading-actions">
-              <p class="time-current"><span id="period-label">日落时分</span><time id="current-time" datetime="18:20">18:20</time></p>
-              <button class="time-panel-hide" id="hide-time-panel" type="button" aria-label="隐藏时间浮窗" aria-controls="campus-time" aria-expanded="true"><span data-icon="eye-off" aria-hidden="true"></span>隐藏浮窗</button>
-            </div>
-          </div>
-          <div class="timeline-row">
-            <span class="timeline-edge" data-icon="moon" aria-hidden="true"></span>
-            <div class="timeline-input-wrap">
-              <div class="timeline-ruler" aria-hidden="true"></div>
-              <div class="timeline-track" aria-hidden="true"></div>
-              <label class="visually-hidden" for="time-slider">校园时间，00:00 至 23:59</label>
-              <input id="time-slider" class="time-slider" type="range" min="0" max="1439" step="1" value="1100" aria-describedby="time-help" aria-valuetext="18点20分，日落时分" />
-              <div class="timeline-thumb-guide" id="timeline-thumb-guide" aria-hidden="true"><span id="thumb-time">18:20</span><span class="guide-line"></span></div>
-              <div class="timeline-labels" aria-hidden="true"><span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span></div>
-            </div>
-            <span class="timeline-edge" data-icon="moon-stars" aria-hidden="true"></span>
-          </div>
-          <div class="time-panel-bottom">
-            <p id="time-help"><span data-icon="hand-move" aria-hidden="true"></span>拖动滑块，发现同一座校园的不同光景</p>
-            <div class="time-presets" role="group" aria-label="选择时段">
-              <button type="button" data-time="360" aria-pressed="false"><span data-icon="sunrise" aria-hidden="true"></span>清晨</button>
-              <button type="button" data-time="720" aria-pressed="false"><span data-icon="sun-high" aria-hidden="true"></span>正午</button>
-              <button type="button" data-time="1100" class="is-active" aria-pressed="true"><span data-icon="sunset" aria-hidden="true"></span>日落</button>
-              <button type="button" data-time="1290" aria-pressed="false"><span data-icon="moon-stars" aria-hidden="true"></span>夜晚</button>
-            </div>
-          </div>
-        </section>
-        <button class="timeline-restore" id="show-time-panel" type="button" aria-controls="campus-time" aria-expanded="false" hidden><span data-icon="chevron-up" aria-hidden="true"></span>显示时间轴</button>
-      </main>
-      <footer class="site-footer"><p>野人花园<span>让每一次看见，都有所不同。</span></p><span>艺术化昼夜场景 · 校园建筑示意</span></footer>
-      <div class="toast" id="toast" role="status" hidden></div>
-    </div>
+    <main id="scene" class="scene" aria-label="可自由拖拽旋转和缩放观看的雨夜便利店街角三维微缩模型"></main>
     <script defer src="./app.js"></script>
   </body>
 </html>
-

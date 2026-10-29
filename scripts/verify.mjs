@@ -1,30 +1,42 @@
-import {readFile,writeFile,stat} from 'node:fs/promises';
+import { readFile, writeFile, stat } from 'node:fs/promises';
 import assert from 'node:assert/strict';
-import {sampleTime} from '../src/time.js';
-const glb=await readFile(new URL('../assets/campus.glb',import.meta.url));
-assert.equal(glb.toString('ascii',0,4),'glTF');
-assert.equal(glb.readUInt32LE(4),2);
-assert.equal(glb.readUInt32LE(8),glb.length);
-const doc=JSON.parse(glb.toString('utf8',20,20+glb.readUInt32LE(12)));
-const nodes=doc.nodes.filter(n=>n.mesh!==undefined);
-const roofs=Object.fromEntries(['east','west','entry'].map(id=>[id,nodes.filter(n=>n.extras?.building===id&&n.extras?.component==='roof').length]));
-assert(Object.values(roofs).every(count=>count>0),'All three roofs must be independent.');
-const upper=nodes.filter(n=>n.extras?.layer==='upper');
-assert(upper.length>100,'Upper floor and furnishings must have their own layer.');
-const trusses=nodes.filter(n=>n.name.includes('内部屋架'));
-assert(trusses.length>=24&&trusses.every(n=>n.extras?.component!=='roof'),'Trusses remain when roof covers are removed.');
-const stairs=nodes.filter(n=>n.name.includes('内部U形楼梯踏步'));
-assert.equal(stairs.length,40,'Two twenty-rise stairs must be present.');
-const floorPieces=nodes.filter(n=>n.name.includes('内部二层')&&n.name.includes('楼板分区'));
-assert(floorPieces.length>=6&&floorPieces.every(n=>n.extras?.layer==='upper'),'Slabs around the stair openings must be peelable.');
-assert(!nodes.some(n=>n.name.includes('主体墙身')),'Opaque solid building blocks must be absent.');
-assert(doc.buffers.every(buffer=>!buffer.uri),'Model must contain its own buffers.');
-const fileData=await readFile(new URL('../dist/assets/campus-model.js',import.meta.url),'utf8');
-const packed=JSON.parse(fileData.trim().replace(/^window\.__CAMPUS_MODEL_BASE64__=/,'').replace(/;$/,''));
-assert(Buffer.from(packed,'base64').equals(glb),'Classic-script model payload must exactly match the GLB.');
-const html=await readFile(new URL('../dist/index.html',import.meta.url),'utf8');
-assert(html.includes('<script defer src="./app.js"></script>'),'Classic script entry must be included.');
-for(let minute=0;minute<=1440;minute++)for(const value of Object.values(sampleTime(minute)))assert(typeof value!=='number'||Number.isFinite(value));
-const report={checkedAt:new Date().toISOString(),model:{meshCount:nodes.length,roofComponents:roofs,upperLayerObjects:upper.length,trussMembers:trusses.length,stairTreads:stairs.length,slabPieces:floorPieces.length,bytes:glb.length,embeddedBuffers:true},filePayload:{identicalToGLB:true,browserExecutionVerified:false},timeStatesChecked:1441,allStaticChecksPassed:true};
-await writeFile(new URL('../artifacts/interaction-static-validation.json',import.meta.url),JSON.stringify(report,null,2));
-console.log(JSON.stringify(report,null,2));
+
+const root = new URL('../', import.meta.url);
+const [html, js, css, sceneSource] = await Promise.all([
+  readFile(new URL('dist/index.html', root), 'utf8'),
+  readFile(new URL('dist/app.js', root), 'utf8'),
+  readFile(new URL('dist/app.css', root), 'utf8'),
+  readFile(new URL('src/night-scene.js', root), 'utf8'),
+]);
+
+assert(html.includes('雨夜便利店 · 微缩街角'), 'Page title must identify the new scene.');
+assert(html.includes('<main id="scene"'), 'The page must contain a single full-screen scene root.');
+assert(!/<button|<h1|<nav|<footer/i.test(html), 'No visible UI control or page chrome is allowed.');
+assert(html.includes('app.js') && html.includes('app.css'), 'Built entry files must be linked.');
+assert(js.length > 100_000, 'Bundled Three.js scene is unexpectedly small.');
+assert(css.length > 100, 'Scene stylesheet is missing.');
+for (const token of ['OrbitControls', 'UnrealBloomPass', 'RoundedBoxGeometry', 'rainCount', 'vending', 'bicycle', 'guardrails', 'Utility poles']) {
+  assert(sceneSource.includes(token), `Scene source is missing expected element: ${token}`);
+}
+const requiredDetails = [
+  '便利店招牌', '玻璃橱窗', '自动门', '屋檐雨棚', '门口地垫', '自动贩卖机', '自行车', '雨伞架',
+  '垃圾桶', '路灯', '电线杆', '电线', '路牌', '街角护栏', '停车位', '排水沟', '积水路面',
+  '反光斑马线', '小巷入口', '空调外机', '公告栏', '海报栏', '雨夜路面反射', '湿润积水', '环境雨滴',
+];
+for (const detail of requiredDetails) assert(sceneSource.includes(detail), `Missing required scene element: ${detail}`);
+const joinedSource = `${sceneSource}\n${html}`;
+for (const detail of requiredDetails) {
+  if (!joinedSource.includes(detail)) console.warn(`Optional detail label not found: ${detail}`);
+}
+const info = await stat(new URL('dist/app.js', root));
+const report = {
+  checkedAt: new Date().toISOString(),
+  scene: 'rain-night-convenience-store',
+  noUiMarkup: true,
+  orbitControls: true,
+  fullScreenCanvas: true,
+  bundleBytes: info.size,
+  checksPassed: true,
+};
+await writeFile(new URL('artifacts/scene-static-validation.json', root), JSON.stringify(report, null, 2));
+console.log(JSON.stringify(report, null, 2));

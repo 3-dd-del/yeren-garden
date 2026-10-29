@@ -1,19 +1,24 @@
 {
-  "name": "qinghe-campus-timewalk",
+  "name": "rain-night-convenience-diorama",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
     "start": "node scripts/serve.mjs",
-    "model": "\"C:/Program Files/Blender Foundation/Blender 5.2/blender.exe\" --background --python scripts/build-campus.py",
-    "verify": "node scripts/verify.mjs"
+    "verify": "node scripts/verify.mjs",
+    "check:browser": "node scripts/browser-check.mjs"
   },
   "dependencies": {
-    "@tabler/icons": "3.35.0",
     "three": "0.180.0"
   },
   "devDependencies": {
     "esbuild": "0.25.10"
+  },
+  "description": "雨夜便利店 · 微缩街角：可自由旋转、缩放观看的日式便利店雨夜三维微缩景观。",
+  "homepage": "https://3-dd-del.github.io/yeren-garden/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/3-dd-del/yeren-garden.git"
   }
 }
